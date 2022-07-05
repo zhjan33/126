@@ -1,10 +1,11 @@
-addEventListener(
-    "fetch",event => {
-        let url=new URL(event.request.url);
-        url.hostname="sg2.31vpn.com";
-        let request=new Request(url,event.request);
-        event. respondWith(
-            fetch(request)
-        )
+export default {
+  async fetch(request, env) {
+    let url = new URL(request.url);
+    if (url.pathname.startsWith('/')) {
+      url.hostname = 'sg2.31vpn.com'
+      let new_request = new Request(url, request);
+      return fetch(new_request);
     }
-)
+    return env.ASSETS.fetch(request);
+  },
+};
